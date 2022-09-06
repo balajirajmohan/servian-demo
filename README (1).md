@@ -1,8 +1,8 @@
 
 # Servian App Demo
 
-This Repo consists of Reusable Infra components based of Terraform HCL that will be used to 
-provision Network components like VPC and Compute Engines reqired for running Jenkins and IAM Policy JSON's and Kubernetes Manifests to deploy your Application.
+This Repo consists of Reusable Infra components based of Terraform HCL that will be used to
+provision Network components like VPC and Compute Engines required for running Jenkins and IAM Policy JSON's and Kubernetes Manifests to deploy your Application.
 
 Tech Stacks Used:
 
@@ -11,24 +11,24 @@ Tech Stacks Used:
 ## Steps to reproduce:
 
 Login to AWS Console and Create an IAM user with Admin Role.
-Download the .csv Crdentials
-As a Best Practise, I have configured my Acess Key ID and Secret access key as a ENV Variables and added to the path so that it can support my Terraform
+Download the .csv Credentials
+As a Best Practice, I have configured my Access Key ID and Secret access key as a ENV Variables and added to the path so that it can support my Terraform
 Tools Needs to be installed on Local Machine:
 
 Terraform - https://www.terraform.io/downloads.html -> Windows 64Bit and allow the download. unzip terraform.exe and add the AWS Access Key ID and secret access key to Windows Environment Variables.
 
 Please follow the below steps for deploying the Jenkins Server Using Terraform:
 
-From Local Machine, navigate to servian-demo\Terraform\resource Folder folder and follow the below steps to deploy a Private VPC and EC2 to host your Jenkins Server to do the deployments on your behalf. 
+From Local Machine, navigate to servian-demo\Terraform\resource Folder and follow the below steps to deploy a Private VPC and EC2 to host your Jenkins Server to do the deployments on your behalf.
 
 ```
-terraform init 
+terraform init
 terraform validate
 terraform plan
 terraform apply --auto-approve
 ```
 
-From Terraform appply output, Please copy the public ip of EC2 vm and type http://<Server-public-ip> to login to Server with port 8080 to access Jenkins and Install Plugins accordingly.
+From Terraform apply output, Please copy the public ip of EC2 vm and type http://<Server-public-ip> to login to Server with port 8080 to access Jenkins and Install Plugins accordingly.
 
 # IAM Role for Kubernetes Service Account
  Amazon EKS supports IAM Roles for Service Accounts (IRSA) that allows cluster operators to map AWS IAM Roles to Kubernetes Service Accounts.
@@ -61,8 +61,8 @@ Let's create an IAM role called eksctl-secret-manager IAM policy to get access t
 
 ## Create a new EKS cluster with a single autoscaling node group.
 
-We will be deploying our EKS Cluster using an utility called EKSCTL which will utilise the existing infrastructure provisioned
-via Terraform. 
+We will be deploying our EKS Cluster using an utility called EKSCTL which will utilize the existing infrastructure provisioned
+via Terraform.
 ```
 eksctl create cluster -f eks.yaml
 
@@ -81,8 +81,8 @@ helm -n kube-system install csi-secrets-store secrets-store-csi-driver/secrets-s
 
 ```
 
-# How do I deplpy my Application in EKS?
-  Lets Deploy secrets and CSI Dependancies first.
+# How do I deploy my Application in EKS?
+  Lets Deploy secrets and CSI Dependencies first.
 
   ```
   kubectl apply -f kube-manifests/secrets/.
@@ -92,11 +92,3 @@ helm -n kube-system install csi-secrets-store secrets-store-csi-driver/secrets-s
   ```
   kubectl apply -f kube-manifests/Application/.
   ```
-
-
- 
-
-
-
-
-
