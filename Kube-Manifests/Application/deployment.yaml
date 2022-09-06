@@ -2,8 +2,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
-  namespace: production
+  name: servian-app
+  namespace: servian-demo
 spec:
   replicas: 1
   selector:
