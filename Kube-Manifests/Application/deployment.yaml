@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      serviceAccountName: nginx
+      containers:
+      - name: servian-application
+        image: servian/techchallengeapp:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DbUser
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: DbUser
+        - name: DbPassword
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: DbPassword
+        - name: DbName
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: DbName
+        - name: DbPort
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: DbPort
+        - name: DbHost
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: DbHost
+        - name: ListenHost
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: ListenHost
+        - name: ListenPort
+          valueFrom:
+            secretKeyRef:
+              name: servian-demo
+              key: ListenPort
