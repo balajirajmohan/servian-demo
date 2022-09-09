@@ -1,0 +1,49 @@
+pipeline {
+
+    agent any
+    environment {
+        registry = "account_id.dkr.ecr.<region>.amazonaws.com/repo-na,e"
+    }
+
+    stages {
+        stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/balajirajmohan/servian-demo.git']]])
+            }
+        }
+      // Only Applicable for Java based Images
+      // stage ('Build') {
+          steps {
+            sh 'mvn clean install'
+            }
+      }
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry
+        }
+      }
+    }
+
+    // Uploading Docker images into AWS ECR
+    stage('Pushing to ECR') {
+     steps{
+         script {
+                sh 'aws ecr get-login-password --region <Region-Name> | docker login --username AWS --password-stdin account_id.dkr.ecr.<Region-Name>.amazonaws.com'
+                sh 'docker push account_id.dkr.ecr.us-east-2.amazonaws.com/my-docker-repo:latest'
+         }
+        }
+      }
+
+       stage('K8S Deploy') {
+        steps{
+            script {
+                withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
+                sh ('kubectl apply -f  /Kube-Manifests/.')
+                }
+            }
+        }
+       }
+    }
+}
